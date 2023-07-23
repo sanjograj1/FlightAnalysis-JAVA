@@ -164,3 +164,35 @@ public class main {
 			crawlUrls(2, array_url, new ArrayList<String>());
 
         }}}
+
+			//distance function
+		public static int finding_minimum_dis(String f_word, String s_word) {
+
+		
+			int params3 = f_word.length();
+			int params4 = s_word.length();
+	
+			
+			int[][] distance = new int[params3 + 1][params4 + 1];
+	
+		
+			for (int i = 0; i <= params3; i++)
+				distance[i][0] = i;
+			for (int i = 1; i <= params4; i++)
+				distance[0][i] = i;
+	
+			for (int i = 0; i < params3; i++) {
+				for (int j = 0; j < params4; j++) {
+					if (f_word.charAt(i) == s_word.charAt(j))
+						distance[i + 1][j + 1] = distance[i][j];
+					else {
+						int variable1 = distance[i][j];
+						int variable2 = distance[i][j + 1];
+						int variable3 = distance[i + 1][j];
+						distance[i + 1][j + 1] = variable1 < variable2 ? (variable1 < variable3 ? variable1 : variable3) : (variable2 < variable3 ? variable2 : variable3);
+						distance[i + 1][j + 1]++;
+					}
+				}
+			}
+			return distance[params3][params4];
+		}
