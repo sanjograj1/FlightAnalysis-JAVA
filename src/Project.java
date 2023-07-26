@@ -26,7 +26,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-public class main {
+public class Project {
 	private static Scanner sc;
 
 	private static WebDriver parameter2;
@@ -139,48 +139,103 @@ public class main {
 	        crawlUrls(2, var_u, new ArrayList<String>());
 
 	        // End data collection
-
+//variable2
 	        while (true) {
-	            boolean exit = false;
-	            System.out.println("\n*******************************************************************");
-	            System.out.println("Choose from the menu and enter the number corresponding to each menu");
-	            System.out.println("1 - Inverted Index");
-	            System.out.println("2 - Frequency Count");
-	            System.out.println("3 - Page Ranking");
-	            System.out.println("4 - Word Completion");
-	            System.out.println("5 - Exit");
-	            System.out.println("\nEnter your choice Number");
-	            int n;
-	            try {
-	                n = variable2.nextInt();
-	                if (n > 0 && n < 6) {
-	                    switch (n) {
-	                        // ... Cases for menu options go here (INVERTED INDEX, FREQUENCY COUNT, etc.)
-	                        default:
-	                            exit = true;
-	                    }
-	                    if (exit)
-	                        break;
+				boolean exit = false;
+				System.out.println("\n***********************");
+				System.out.println("Choose from the menu and enter the number corresponding to each menu");
+				System.out.println("1 - Inverted Index");
+				System.out.println("2 - Frequency Count");
+				System.out.println("3 - Page Ranking");
+				System.out.println("4 - Word Completion");
+				System.out.println("5 - Exit");
+				System.out.println("\nEnter your choice Number");
+				int n;
+				try {
+					n = variable2.nextInt();
+					if (n > 0 && n < 6) {
+						switch (n) {
+							case 1:
+								System.out.println("\n\n======================== Inverted Index ========================\n\n");
 
-	                } else
-	                    System.out.println("");
+								for (File file : new File("src/resc/Web Pages/").listFiles()) {
+									if (file.isFile() && file.getName().endsWith(".txt")) {
+										String content = new String(Files.readAllBytes(Paths.get(file.getPath())));
+										if (content != null) {
+											List<String> ret = InvertedIndex.parseContent(content);
+											InvertedIndex.constructTrie(file.getName(), ret);
+										}
+									}
+								}
+								break;
+							case 2:
+								System.out.println("\n\n======================== Frequency Count ========================\n\n");
 
-	            } catch (Exception e) {
-	                // TODO: handle exception
-	                e.printStackTrace();
-	            }
-	        }
+								for (File file : new File("src/resc/Web Pages/").listFiles()) {
+									if (file.isFile() && file.getName().endsWith(".txt")) {
+										String content = new String(Files.readAllBytes(Paths.get(file.getPath())));
+										if (content != null) {
+											System.out.println("\n"+file.getName());
+											String[] strArr = FrequencyCount
+													.parseContent(content);
+											FrequencyCount.printWordFrequency(strArr);
+										}
+									}
+								}
+								break;
+							case 3:
+								System.out.println("\n\n======================== Page Ranking ========================\n\n");
+								System.out.print("Enter word: ");
+								sc = new Scanner(System.in);
+								String input = sc.nextLine();
+								PageRanking pg = new PageRanking();
 
-	    } catch (Exception e) {
-	        // TODO: handle exception
-	        e.printStackTrace();
-	    } finally {
-	        // Close the Scanners to free resources
-	        variable1.close();
-	        variable2.close();
-	    }
+								Hashtable<String, Integer> pageRank = pg.matchPattern(input);
+
+								if (pageRank.size() == 0)
+									System.out.println("Not found");
+								else {
+									int totalOccurences = 0;
+									for (int occurences : pageRank.values())
+										totalOccurences += occurences;
+									System.out.println("About " + totalOccurences + " matches ");
+									System.out.println("Matches found in " + pageRank.size() + " web pages.\n");
+									System.out.println("Matches\t Top 10 Pages");
+									Map<String, Integer> sortedByValueDesc = pageRank.entrySet()
+											.stream().limit(10)
+											.sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
+											.collect(
+													Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+									sortedByValueDesc.forEach((key, value) -> System.out.println("  " + value + " -- " + key));
+								}
+								break;
+							case 4:
+								System.out.println("\n\n======================== Word Completion ========================\n\n");
+								WordCompletion.run();
+								break;
+							default:
+								exit = true;
+						}
+						if (exit)
+							break;
+
+					} else
+						System.out.println("Oops! Entered Wrong number");
+
+				} catch (Exception e) {
+					// TODO: handle exception
+					e.printStackTrace();
+				}
+			}
+
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			variable1.close();
+			variable2.close();
+		}
 	}
-
 	private static void crawlUrls(int level, List<String> var_u, ArrayList<String> visited) throws Exception {
 	    // TODO Auto-generated method stub
 	    // Loop through each URL in the var_u list and crawl it at the specified level

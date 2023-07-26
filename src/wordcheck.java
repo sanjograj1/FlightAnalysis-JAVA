@@ -1,4 +1,4 @@
-// Import required libraries
+//required libraries
 import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -8,17 +8,17 @@ import java.util.Set;
 
 public class wordcheck {
 	
-	// Function to calculate minimum distance
+	//Function to calculate minimum distance
 	public static int minDistance(String firstcharacter, String secondcharacter) {
 		
-		// Assigning length of both words to variables
+		//assigning length of both words to variables
         int m = firstcharacter.length();
         int n = secondcharacter.length();
         
-        // Assigning both lengths to an array
+        //assigning both lengths to an array
         int[][] editDistance = new int[m + 1][n + 1];
         
-        // Applying Dynamic Programming algorithm
+        //Dynamic Programming algorithm
         for(int i = 0; i <= m; i++)
         	editDistance[i][0] = i;
         for(int i = 1; i <= n; i++)
@@ -40,35 +40,41 @@ public class wordcheck {
         return editDistance[m][n];
     }
 	
-	// Function to parse HTML file and store in an Array
+	//Function to parse HTML file and store in an Array
 	static Set<String> htmlParse (){
 		
-		// Fetching the webpage document
+		//fetching document
 		String url = "http://www.citymayors.com/gratis/canadian_cities.html";
+
+		
 	    Document docs;
 	    
-	    // Adding try block to check for exceptions
+	    //adding try block to check for exceptions
 		try {
 			docs = Jsoup.connect(url).get();
 		    String body = docs.body().text();
 		    
-		    // Adding words to an array
+		    //adding words in an array
 		    String[] string =  body.split("\\s+");
 		    Set<String> name = new HashSet<>();
 		    for (int i = 0; i < string.length; i++) {
-		        // Deleting non alphanumeric characters
+		        //deleting non alphanumeric characters
 		        name.add(string[i].replaceAll("[^\\w]", "").toLowerCase());
 		    }
 		   
-		    // Return the set of words
+		    //System.out.println("Length of string is: "+ str.length);
+		    
+		    
 		    return name;
 
 		} catch (IOException e) {
-			// Handle exception
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return null;
+		
 	}
-	// Main function
+	//Main Function
+	
 }
