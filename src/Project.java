@@ -236,6 +236,7 @@ public class Project {
 			variable2.close();
 		}
 	}
+
 	private static void crawlUrls(int level, List<String> var_u, ArrayList<String> visited) throws Exception {
 	    // TODO Auto-generated method stub
 	    // Loop through each URL in the var_u list and crawl it at the specified level
