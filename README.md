@@ -1,4 +1,5 @@
 Flight Ticket Web Search Engine
+
 Welcome to the Flight Ticket Web Search Engine repository! This project is a flight management system developed in Java, utilizing web crawling and HTML parsing techniques. It comes equipped with a range of features, including an Inverted Index, Frequency Count, Page Ranking, Word Check, Word Completion, and a Dictionary.
 
 Features
